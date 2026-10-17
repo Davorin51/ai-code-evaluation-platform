@@ -15,6 +15,15 @@ shows results returned by a FastAPI backend and a separate execution worker.
 submitting arbitrary code requires explicitly enabling the disposable Docker runner on a
 dedicated Linux Docker environment. The API never executes candidate Python.
 
+![Actual evaluation dashboard with two real submissions](docs/screenshots/overview.png)
+
+[Workspace and failure details](docs/screenshots/workspace.png) ·
+[Side-by-side comparison](docs/screenshots/comparison.png) ·
+[Mobile view](docs/screenshots/overview-375.png)
+
+Screenshots come from the running application using the real API and separate worker.
+Timings vary by run; charts contain measured results, not sample dashboard placeholders.
+
 ## What you can demonstrate
 
 - Eight original exercises spanning algorithms, data structures and business data processing.
@@ -113,6 +122,13 @@ For a scripted demonstration with the two servers running:
 python scripts/demo.py
 ```
 
+Browse the actual exported results without installation:
+
+| Candidate | JSON | HTML | PDF |
+| --- | --- | --- | --- |
+| Buggy example, 3/5 | [JSON](examples/reports/two-sum-buggy.json) | [HTML](examples/reports/two-sum-buggy.html) | [PDF](examples/reports/two-sum-buggy.pdf) |
+| Corrected reference, 5/5 | [JSON](examples/reports/two-sum-reference.json) | [HTML](examples/reports/two-sum-reference.html) | [PDF](examples/reports/two-sum-reference.pdf) |
+
 This saves real backend responses and reports under `examples/reports/`; it does not insert
 fabricated history. Exported timings are environment-specific single measurements, not
 comparative speed claims. The supplied examples are repository-owned test exercises, not
@@ -164,6 +180,7 @@ pytest -m 'not docker' --cov --cov-fail-under=85
 python -m build
 cd frontend
 npm ci
+npm run format:check
 npm run build
 npx playwright install --with-deps chromium
 npm run test:e2e
@@ -180,7 +197,7 @@ docker build -f worker/Dockerfile.sandbox -t ace-sandbox:local .
 ACE_REQUIRE_DOCKER=1 pytest -m docker -v
 ```
 
-Without Docker, these four tests are explicitly skipped. CI requires them and additionally
+Without Docker, these five tests are explicitly skipped. CI requires them and additionally
 builds/starts the default Compose stack and checks real API/worker/PDF behavior.
 See [verification record](docs/verification.md) for what was actually run.
 
