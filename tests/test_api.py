@@ -121,3 +121,33 @@ def test_worker_auth_and_trusted_boundary():
             json={"challenge_id": "two-sum", "variant": "buggy", "code": "pass"},
         )
         assert r.status_code == 422
+
+
+def test_request_body_limit(client):
+    response = client.post(
+        "/api/submissions", content=b"x" * 131073, headers={"Content-Type": "application/json"}
+    )
+    assert response.status_code == 413
+    assert client.get("/api/submissions").json() == []
+
+
+def test_worker_transport_failure_mapping(monkeypatch):
+    import httpx
+
+    from backend.app.transport import WorkerClient
+
+    service = WorkerClient(Settings())
+
+    def unavailable(*args, **kwargs):
+        raise httpx.ConnectError("worker down")
+
+    monkeypatch.setattr("backend.app.transport.httpx.request", unavailable)
+    with pytest.raises(WorkerUnavailable):
+        service.capabilities()
+
+    def rejected(*args, **kwargs):
+        return httpx.Response(422, request=httpx.Request("POST", "http://worker/evaluate"))
+
+    monkeypatch.setattr("backend.app.transport.httpx.request", rejected)
+    with pytest.raises(WorkerRejected):
+        service.capabilities()

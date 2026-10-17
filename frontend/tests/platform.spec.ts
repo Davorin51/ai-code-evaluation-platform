@@ -14,7 +14,7 @@ test('real backend workflow, reports, comparison, responsive layouts and accessi
  const report=page.getByRole('region',{name:'Evaluation report'});
  await expect(report.getByText('3/5 passed',{exact:true})).toBeVisible();
  await report.getByText('no-reuse',{exact:true}).click();
- await expect(report.getByText('Returned value differs from the challenge contract',{exact:true})).toBeVisible();
+ await expect(report.locator('details.test-case').filter({hasText:'no-reuse'}).getByText('Returned value differs from the challenge contract',{exact:true})).toBeVisible();
  await page.screenshot({path:shots+'/workspace.png',fullPage:true});
  const downloadPromise=page.waitForEvent('download');
  await report.getByRole('link',{name:'PDF',exact:false}).click();

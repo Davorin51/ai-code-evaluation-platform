@@ -1,13 +1,32 @@
 import html
 import json
 from io import BytesIO
+from pathlib import Path
 from xml.sax.saxutils import escape
 
+import reportlab
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import (
+    KeepTogether,
+    Paragraph,
+    Preformatted,
+    SimpleDocTemplate,
+    Spacer,
+    Table,
+    TableStyle,
+)
 
 from backend.app.challenges import REGISTRY
+
+_FONT_ROOT = Path(reportlab.__file__).parent / "fonts"
+pdfmetrics.registerFont(TTFont("Review", str(_FONT_ROOT / "Vera.ttf")))
+pdfmetrics.registerFont(TTFont("ReviewBold", str(_FONT_ROOT / "VeraBd.ttf")))
+pdfmetrics.registerFontFamily(
+    "Review", normal="Review", bold="ReviewBold", italic="Review", boldItalic="ReviewBold"
+)
 
 
 def render_report(submission: dict, format: str) -> tuple[bytes, str]:
@@ -52,6 +71,14 @@ def render_report(submission: dict, format: str) -> tuple[bytes, str]:
         raise ValueError("Unknown report format")
     buffer = BytesIO()
     styles = getSampleStyleSheet()
+    for name in styles.byName:
+        styles[name].fontName = (
+            "ReviewBold" if name.startswith("Heading") or name == "Title" else "Review"
+        )
+    styles["Heading2"].textColor = colors.HexColor("#254c75")
+    styles["Code"].fontName = "Review"
+    styles["Code"].fontSize = 8
+    styles["Code"].leading = 12
     styles["Normal"].fontSize = 9
     styles["Normal"].leading = 14
     styles["BodyText"].fontSize = 9
@@ -78,7 +105,7 @@ def render_report(submission: dict, format: str) -> tuple[bytes, str]:
     )
     story.extend([table, Spacer(1, 14), para(result["summary"]), para(note)])
     for case in result["cases"]:
-        story.extend([Spacer(1, 12), para(f"{case['name']} - {case['status']}", "Heading2")])
+        case_story = [Spacer(1, 12), para(f"{case['name']} - {case['status']}", "Heading2")]
         for key in (
             "hidden",
             "input",
@@ -95,21 +122,22 @@ def render_report(submission: dict, format: str) -> tuple[bytes, str]:
                 else str(case[key])
             )
             # Long source values are broken for readable wrapping, without hiding errors.
-            story.append(para(f"{key}: {value}"))
+            case_story.append(para(f"{key}: {value}"))
+        story.append(KeepTogether(case_story))
     story.extend(
         [
             Spacer(1, 14),
             para("Static analysis", "Heading2"),
             para(json.dumps(result["static_findings"], indent=2)),
             para("Candidate source", "Heading2"),
-            para(submission["code"]),
+            Preformatted(submission["code"], styles["Code"], maxLineLength=90),
             para("Execution limits", "Heading2"),
             para(json.dumps(result["limits"], indent=2)),
         ]
     )
 
     def footer(canvas, doc):
-        canvas.setFont("Helvetica", 8)
+        canvas.setFont("Review", 8)
         canvas.drawString(45, 25, "Code Review Lab | Reproducible evaluation report")
         canvas.drawRightString(550, 25, f"Page {doc.page}")
 
