@@ -46,7 +46,9 @@ test('real backend workflow, reports, comparison, responsive layouts and accessi
   await page.setViewportSize({width,height:1050});
   for(const tab of ['Overview','Challenges','History','Compare']){
    await page.getByRole('button',{name:tab,exact:false}).first().click();
-   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+   const geometry=await page.evaluate(()=>({viewport:innerWidth,width:document.documentElement.scrollWidth,overflow:[...document.querySelectorAll('*')].map(el=>({tag:el.tagName,cls:el.className.toString().slice(0,100),left:el.getBoundingClientRect().left,right:el.getBoundingClientRect().right})).filter(el=>el.right>innerWidth+1||el.left< -1).slice(0,25)}));
+   if(geometry.width>geometry.viewport) await page.screenshot({path:shots+`/overflow-${width}-${tab}.png`,fullPage:true});
+   expect(geometry.width,JSON.stringify({tab,...geometry})).toBeLessThanOrEqual(geometry.viewport);
   }
   await page.getByRole('button',{name:'Overview',exact:false}).first().click();
   await page.evaluate(()=>window.scrollTo(0,0));

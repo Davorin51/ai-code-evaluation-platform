@@ -69,6 +69,9 @@ jobs:
         run: |
           export ACE_DOCKER_GID=$(stat -c '%g' /var/run/docker.sock)
           docker compose -f compose.yaml -f compose.sandbox.yaml up -d --build worker
+          docker compose -f compose.yaml -f compose.sandbox.yaml exec -T worker id
+          docker compose -f compose.yaml -f compose.sandbox.yaml exec -T worker docker version
+          docker compose -f compose.yaml -f compose.sandbox.yaml exec -T worker docker image inspect ace-sandbox:local
           ACE_SMOKE_MODE=docker python scripts/compose_smoke.py
       - name: Container logs
         if: always()
