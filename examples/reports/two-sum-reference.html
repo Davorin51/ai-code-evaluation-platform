@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Evaluation report - Two Sum</title><style>body{font:15px/1.65 system-ui,sans-serif;color:#142333;max-width:940px;margin:40px auto;padding:0 24px}h1{font-size:30px}h2{font-size:19px}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:9px;border-bottom:1px solid #ddd;overflow-wrap:anywhere}th{width:25%}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f4f7;padding:18px;font:12px/1.6 monospace}section{break-inside:avoid}.note{color:#475569}</style></head><body><p>AI CODE EVALUATION PLATFORM</p><h1>Two Sum - Evaluation report</h1><table><tr><th>Submission label</th><td>Corrected reference</td></tr><tr><th>Submission ID</th><td>35578fdc-bbbf-4e65-bbdd-0ef5eaf64884</td></tr><tr><th>Challenge</th><td>Two Sum</td></tr><tr><th>Evaluated (UTC)</th><td>2026-10-17T18:27:40.927975+00:00</td></tr><tr><th>Source label</th><td>trusted-example</td></tr><tr><th>Mode</th><td>trusted</td></tr><tr><th>Test pass rate</th><td>5/5 (100.00%)</td></tr><tr><th>Completed-case time</th><td>5.065 ms</td></tr><tr><th>Ruff</th><td>completed; 0 findings</td></tr><tr><th>Reference verified</th><td>True</td></tr><tr><th>Runtime</th><td>CPython 3.12.14</td></tr><tr><th>Candidate SHA-256</th><td>8cf428b414c00da94e973168fe1ac606f39f9afb47f430ec81f48ccecfb4a06f</td></tr></table><p>5/5 deterministic tests passed. Test pass rate is not code coverage or proof of general correctness. All reference checks passed.</p><p class="note">Deterministic test pass rate is not code coverage or proof of correctness. Timings are single measurements, include interpreter work and exclude container startup. Timed-out or resource-terminated cases have no completed duration. RSS includes the interpreter (Linux KiB). Hidden edge cases are revealed after evaluation for reproducible debugging.</p><section><h2>basic - passed</h2><pre>{
+  &quot;name&quot;: &quot;basic&quot;,
+  &quot;hidden&quot;: false,
+  &quot;status&quot;: &quot;passed&quot;,
+  &quot;input&quot;: {
+    &quot;nums&quot;: [
+      2,
+      7,
+      11
+    ],
+    &quot;target&quot;: 9
+  },
+  &quot;expected&quot;: [
+    0,
+    1
+  ],
+  &quot;actual&quot;: [
+    0,
+    1
+  ],
+  &quot;error&quot;: null,
+  &quot;duration_ms&quot;: 0.835154,
+  &quot;peak_rss_kib&quot;: 42496,
+  &quot;reference_duration_ms&quot;: 0.920703
+}</pre></section><section><h2>no-reuse - passed</h2><pre>{
+  &quot;name&quot;: &quot;no-reuse&quot;,
+  &quot;hidden&quot;: true,
+  &quot;status&quot;: &quot;passed&quot;,
+  &quot;input&quot;: {
+    &quot;nums&quot;: [
+      3
+    ],
+    &quot;target&quot;: 6
+  },
+  &quot;expected&quot;: [],
+  &quot;actual&quot;: [],
+  &quot;error&quot;: null,
+  &quot;duration_ms&quot;: 0.895415,
+  &quot;peak_rss_kib&quot;: 42496,
+  &quot;reference_duration_ms&quot;: 1.271931
+}</pre></section><section><h2>repeated - passed</h2><pre>{
+  &quot;name&quot;: &quot;repeated&quot;,
+  &quot;hidden&quot;: true,
+  &quot;status&quot;: &quot;passed&quot;,
+  &quot;input&quot;: {
+    &quot;nums&quot;: [
+      3,
+      3
+    ],
+    &quot;target&quot;: 6
+  },
+  &quot;expected&quot;: [
+    0,
+    1
+  ],
+  &quot;actual&quot;: [
+    0,
+    1
+  ],
+  &quot;error&quot;: null,
+  &quot;duration_ms&quot;: 1.199722,
+  &quot;peak_rss_kib&quot;: 42496,
+  &quot;reference_duration_ms&quot;: 1.134665
+}</pre></section><section><h2>empty - passed</h2><pre>{
+  &quot;name&quot;: &quot;empty&quot;,
+  &quot;hidden&quot;: true,
+  &quot;status&quot;: &quot;passed&quot;,
+  &quot;input&quot;: {
+    &quot;nums&quot;: [],
+    &quot;target&quot;: 0
+  },
+  &quot;expected&quot;: [],
+  &quot;actual&quot;: [],
+  &quot;error&quot;: null,
+  &quot;duration_ms&quot;: 1.073362,
+  &quot;peak_rss_kib&quot;: 42496,
+  &quot;reference_duration_ms&quot;: 0.909557
+}</pre></section><section><h2>negative - passed</h2><pre>{
+  &quot;name&quot;: &quot;negative&quot;,
+  &quot;hidden&quot;: true,
+  &quot;status&quot;: &quot;passed&quot;,
+  &quot;input&quot;: {
+    &quot;nums&quot;: [
+      -4,
+      2,
+      5
+    ],
+    &quot;target&quot;: 1
+  },
+  &quot;expected&quot;: [
+    0,
+    2
+  ],
+  &quot;actual&quot;: [
+    0,
+    2
+  ],
+  &quot;error&quot;: null,
+  &quot;duration_ms&quot;: 1.061615,
+  &quot;peak_rss_kib&quot;: 42496,
+  &quot;reference_duration_ms&quot;: 0.882195
+}</pre></section><h2>Static analysis findings</h2><pre>[]</pre><h2>Candidate source</h2><pre>def solve(nums, target):
+    seen = {}
+    for i, value in enumerate(nums):
+        if target - value in seen:
+            return [seen[target - value], i]
+        seen.setdefault(value, i)
+    return []
+</pre><h2>Execution limits</h2><pre>{
+  &quot;wall_seconds_per_case&quot;: 3,
+  &quot;cpu_seconds_per_case&quot;: 1,
+  &quot;memory_mib&quot;: 128,
+  &quot;output_bytes&quot;: 65536,
+  &quot;docker_pids&quot;: 16,
+  &quot;network&quot;: &quot;none&quot;,
+  &quot;scope&quot;: &quot;per test; RSS includes interpreter; Linux KiB; time excludes container startup&quot;
+}</pre></body></html>

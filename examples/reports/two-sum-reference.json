@@ -1,0 +1,146 @@
+{
+  "id": "35578fdc-bbbf-4e65-bbdd-0ef5eaf64884",
+  "challenge_id": "two-sum",
+  "label": "Corrected reference",
+  "origin": "trusted-example",
+  "created_at": "2026-10-17T18:27:40.927975+00:00",
+  "passed": 5,
+  "total": 5,
+  "pass_rate": 100.0,
+  "mode": "trusted",
+  "execution_ms": 5.065268,
+  "code": "def solve(nums, target):\n    seen = {}\n    for i, value in enumerate(nums):\n        if target - value in seen:\n            return [seen[target - value], i]\n        seen.setdefault(value, i)\n    return []\n",
+  "result": {
+    "mode": "trusted",
+    "cases": [
+      {
+        "name": "basic",
+        "hidden": false,
+        "status": "passed",
+        "input": {
+          "nums": [
+            2,
+            7,
+            11
+          ],
+          "target": 9
+        },
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ],
+        "error": null,
+        "duration_ms": 0.835154,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 0.920703
+      },
+      {
+        "name": "no-reuse",
+        "hidden": true,
+        "status": "passed",
+        "input": {
+          "nums": [
+            3
+          ],
+          "target": 6
+        },
+        "expected": [],
+        "actual": [],
+        "error": null,
+        "duration_ms": 0.895415,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 1.271931
+      },
+      {
+        "name": "repeated",
+        "hidden": true,
+        "status": "passed",
+        "input": {
+          "nums": [
+            3,
+            3
+          ],
+          "target": 6
+        },
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ],
+        "error": null,
+        "duration_ms": 1.199722,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 1.134665
+      },
+      {
+        "name": "empty",
+        "hidden": true,
+        "status": "passed",
+        "input": {
+          "nums": [],
+          "target": 0
+        },
+        "expected": [],
+        "actual": [],
+        "error": null,
+        "duration_ms": 1.073362,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 0.909557
+      },
+      {
+        "name": "negative",
+        "hidden": true,
+        "status": "passed",
+        "input": {
+          "nums": [
+            -4,
+            2,
+            5
+          ],
+          "target": 1
+        },
+        "expected": [
+          0,
+          2
+        ],
+        "actual": [
+          0,
+          2
+        ],
+        "error": null,
+        "duration_ms": 1.061615,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 0.882195
+      }
+    ],
+    "passed": 5,
+    "total": 5,
+    "pass_rate": 100.0,
+    "categories": [],
+    "static_findings": [],
+    "static_status": "completed",
+    "execution_ms": 5.065268,
+    "summary": "5/5 deterministic tests passed. Test pass rate is not code coverage or proof of general correctness. All reference checks passed.",
+    "reference_verified": true,
+    "challenge_version": "1",
+    "runner_version": "1",
+    "candidate_sha256": "8cf428b414c00da94e973168fe1ac606f39f9afb47f430ec81f48ccecfb4a06f",
+    "runtime": "CPython 3.12.14",
+    "limits": {
+      "wall_seconds_per_case": 3,
+      "cpu_seconds_per_case": 1,
+      "memory_mib": 128,
+      "output_bytes": 65536,
+      "docker_pids": 16,
+      "network": "none",
+      "scope": "per test; RSS includes interpreter; Linux KiB; time excludes container startup"
+    }
+  }
+}

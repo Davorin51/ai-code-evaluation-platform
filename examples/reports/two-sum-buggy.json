@@ -1,0 +1,151 @@
+{
+  "id": "544e950e-6197-4289-8559-d83324f0fde9",
+  "challenge_id": "two-sum",
+  "label": "Buggy example",
+  "origin": "trusted-example",
+  "created_at": "2026-10-17T18:27:40.558882+00:00",
+  "passed": 3,
+  "total": 5,
+  "pass_rate": 60.0,
+  "mode": "trusted",
+  "execution_ms": 4.420611,
+  "code": "def solve(nums, target):\n    seen = {}\n    for i, value in enumerate(nums):\n        seen[value] = i\n        if target - value in seen:\n            return [seen[target - value], i]\n    return []\n",
+  "result": {
+    "mode": "trusted",
+    "cases": [
+      {
+        "name": "basic",
+        "hidden": false,
+        "status": "passed",
+        "input": {
+          "nums": [
+            2,
+            7,
+            11
+          ],
+          "target": 9
+        },
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ],
+        "error": null,
+        "duration_ms": 0.921244,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 0.901825
+      },
+      {
+        "name": "no-reuse",
+        "hidden": true,
+        "status": "wrong_output",
+        "input": {
+          "nums": [
+            3
+          ],
+          "target": 6
+        },
+        "expected": [],
+        "actual": [
+          0,
+          0
+        ],
+        "error": "Returned value differs from the challenge contract",
+        "duration_ms": 0.806291,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 1.087583
+      },
+      {
+        "name": "repeated",
+        "hidden": true,
+        "status": "wrong_output",
+        "input": {
+          "nums": [
+            3,
+            3
+          ],
+          "target": 6
+        },
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "error": "Returned value differs from the challenge contract",
+        "duration_ms": 0.977879,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 0.913202
+      },
+      {
+        "name": "empty",
+        "hidden": true,
+        "status": "passed",
+        "input": {
+          "nums": [],
+          "target": 0
+        },
+        "expected": [],
+        "actual": [],
+        "error": null,
+        "duration_ms": 0.816106,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 0.794683
+      },
+      {
+        "name": "negative",
+        "hidden": true,
+        "status": "passed",
+        "input": {
+          "nums": [
+            -4,
+            2,
+            5
+          ],
+          "target": 1
+        },
+        "expected": [
+          0,
+          2
+        ],
+        "actual": [
+          0,
+          2
+        ],
+        "error": null,
+        "duration_ms": 0.899091,
+        "peak_rss_kib": 42496,
+        "reference_duration_ms": 1.034243
+      }
+    ],
+    "passed": 3,
+    "total": 5,
+    "pass_rate": 60.0,
+    "categories": [
+      "wrong_output"
+    ],
+    "static_findings": [],
+    "static_status": "completed",
+    "execution_ms": 4.420611,
+    "summary": "3/5 deterministic tests passed. Test pass rate is not code coverage or proof of general correctness. Review the reproducible failures below.",
+    "reference_verified": true,
+    "challenge_version": "1",
+    "runner_version": "1",
+    "candidate_sha256": "f580db2ba43bf9e93e32546cfa4ca68039a34477eed83c01fd88812ce583a75f",
+    "runtime": "CPython 3.12.14",
+    "limits": {
+      "wall_seconds_per_case": 3,
+      "cpu_seconds_per_case": 1,
+      "memory_mib": 128,
+      "output_bytes": 65536,
+      "docker_pids": 16,
+      "network": "none",
+      "scope": "per test; RSS includes interpreter; Linux KiB; time excludes container startup"
+    }
+  }
+}

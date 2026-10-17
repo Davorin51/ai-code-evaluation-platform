@@ -92,7 +92,13 @@ def render_report(submission: dict, format: str) -> tuple[bytes, str]:
         para("AI CODE EVALUATION PLATFORM", "Heading3"),
         para(title + " - Evaluation report", "Title"),
     ]
-    table = Table([[para(k), para(v)] for k, v in fields.items()], colWidths=[130, 360])
+    table = Table(
+        [
+            [para(k), para(v[:32] + "\n" + v[32:] if k == "Candidate SHA-256" else v)]
+            for k, v in fields.items()
+        ],
+        colWidths=[130, 360],
+    )
     table.setStyle(
         TableStyle(
             [
