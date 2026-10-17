@@ -1,0 +1,12 @@
+# Opt-in ONLY on a disposable/dedicated Linux Docker VM.
+# Only the private worker receives the daemon socket. API/frontend never do.
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    environment:
+      ACE_EXECUTION_MODE: docker
+      ACE_SANDBOX_IMAGE: ace-sandbox:local
+    group_add: ["${ACE_DOCKER_GID:?Set the Docker socket group ID first}"]
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
