@@ -30,7 +30,7 @@ test('real backend workflow, reports, comparison, responsive layouts and accessi
  const submissions=await (await request.get('http://127.0.0.1:8000/api/submissions')).json();
  await page.getByLabel('Baseline submission',{exact:true}).selectOption(submissions[1].id);
  await page.getByLabel('Candidate submission',{exact:true}).selectOption(submissions[0].id);
- await page.getByRole('button',{name:'Compare',exact:true}).click();
+ await page.getByRole('main').getByRole('button',{name:'Compare',exact:true}).click();
  await expect(page.getByText('40 percentage points',{exact:true})).toBeVisible();
  await page.screenshot({path:shots+'/comparison.png',fullPage:true});
  await page.getByRole('button',{name:'History',exact:false}).click();

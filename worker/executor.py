@@ -78,6 +78,7 @@ class Executor:
         if mode not in {"trusted", "docker"}:
             raise ValueError("Execution mode must be trusted or docker")
         self.mode, self.image = mode, image
+        self.image_identity = image
 
     def docker_command(self, name: str) -> list[str]:
         return [
@@ -102,7 +103,7 @@ class Executor:
             "--tmpfs=/tmp:rw,noexec,nosuid,nodev,size=16m",
             "--log-driver=none",
             "-i",
-            self.image,
+            self.image_identity,
         ]
 
     def available(self):
@@ -112,13 +113,14 @@ class Executor:
                     "Docker CLI is missing; arbitrary execution remains disabled"
                 )
             try:
-                subprocess.run(
+                completed = subprocess.run(
                     ["docker", "image", "inspect", self.image],
                     check=True,
                     capture_output=True,
                     timeout=10,
                 )
-            except (subprocess.SubprocessError, OSError) as exc:
+                self.image_identity = json.loads(completed.stdout)[0]["Id"]
+            except (subprocess.SubprocessError, OSError, ValueError, KeyError, IndexError) as exc:
                 raise InfrastructureError(
                     "Sandbox image/daemon unavailable; no host execution fallback"
                 ) from exc

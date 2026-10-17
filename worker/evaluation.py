@@ -135,7 +135,7 @@ class Evaluator:
             candidate_sha256=hashlib.sha256(request.code.encode()).hexdigest(),
             runtime=f"CPython {platform.python_version()}"
             if self.executor.mode == "trusted"
-            else "sandbox image: " + self.executor.image,
+            else "sandbox image: " + self.executor.image_identity,
             limits={
                 **LIMITS,
                 "scope": "per test; RSS includes interpreter; Linux KiB; time excludes container startup",

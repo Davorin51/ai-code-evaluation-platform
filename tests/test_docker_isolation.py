@@ -79,3 +79,21 @@ def test_file_is_not_retained_between_cases(sandbox):
         )["value"]
         is False
     )
+
+
+def test_full_evaluator_accepts_modified_candidate_only_in_docker(sandbox):
+    from backend.app.challenges import REGISTRY
+    from backend.app.contracts import SubmissionRequest
+    from worker.evaluation import Evaluator
+
+    challenge = REGISTRY["two-sum"]
+    result = Evaluator(sandbox).evaluate(
+        SubmissionRequest(
+            challenge_id=challenge.id,
+            code=challenge.buggy + "\n# Simulated externally supplied candidate\n",
+            origin="ai-generated",
+        )
+    )
+    assert result.mode == "docker"
+    assert result.passed == 3 and result.total == 5
+    assert result.reference_verified
